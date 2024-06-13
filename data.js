@@ -235,9 +235,9 @@ function moveTaskDown ()  {
     console.log(selectedStore);
 
     for (let j in selectedStore) {
-        for (let i in toDo) {  
-            if (toDo[i].taskToDo == selectedStore[j] &&  toDo[i] !== toDo[toDo.length-1]) {
-                const count = Number(i)+Number(j)+1;
+        for (let i in toDo) { 
+            const count = Number(i)+Number(j)+1; 
+            if (toDo[i].taskToDo == selectedStore[j] &&  toDo[count] <= toDo[toDo.length-1]) {
                 const storedTask = toDo[i];
                 console.log(count);
                 console.log(storedTask);
