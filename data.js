@@ -203,7 +203,8 @@ function moveTaskUp ()  {
 
     for (let j in selectedStore) {
         for (let i in toDo) {
-            if (toDo[i].taskToDo == selectedStore[j] && toDo[i] !== toDo[0]) {
+            const first = Number(i)-selectedStore.length
+            if (toDo[i].taskToDo == selectedStore[j] && toDo[first] >= toDo[0]) {
                 const storedTask = toDo[i];
                 toDo[i] = toDo[i-1];
                 toDo[i-1] = storedTask;
@@ -234,15 +235,17 @@ function moveTaskDown ()  {
 
     console.log(selectedStore);
 
+
     for (let j in selectedStore) {
         for (let i in toDo) { 
-            const count = Number(i)+Number(j)+1; 
-            if (toDo[i].taskToDo == selectedStore[j] &&  toDo[count] <= toDo[toDo.length-1]) {
+            const last = Number(i)+selectedStore.length
+            if (toDo[i].taskToDo == selectedStore[j] &&  toDo[last] <= toDo[toDo.length-1]) {
+                const count = Number(i)+Number(j)+1;
                 const storedTask = toDo[i];
-                console.log(count);
                 console.log(storedTask);
                 toDo[i] = toDo[count];
                 toDo[count] = storedTask;
+                console.log(toDo)
                 break;
             }
         }
