@@ -199,17 +199,20 @@ function moveTaskUp ()  {
         selectedStore.push(selectedTask);
     }
 
-    console.log(selectedStore);
-
     for (let j in selectedStore) {
+        if (selectedStore[j] == toDo[0].taskToDo) {
+            break; 
+        }
         for (let i in toDo) {
-            const first = Number(i)-selectedStore.length
-            if (toDo[i].taskToDo == selectedStore[j] && toDo[first] >= toDo[0]) {
-                const storedTask = toDo[i];
-                toDo[i] = toDo[i-1];
-                toDo[i-1] = storedTask;
-                break;
-            }
+            console.log(selectedStore[j]);
+                if (toDo[i].taskToDo == selectedStore[j]) {
+                    console.log("true");
+                    const storedTask = toDo[i];
+                    toDo[i] = toDo[i-1];
+                    toDo[i-1] = storedTask;
+                    break;
+                }
+            
         }
     };
 
