@@ -47,21 +47,23 @@ function fillTasks () {
                         : (divMake.className = "taskItem colored" , backgroundWhite = true);
         parentSection.appendChild(divMake);
 
-        //label with task 
+        //label 
         const label = document.createElement("label");
-        label.innerHTML = task.taskToDo;
         label.setAttribute("for", index);
         const parentDiv = divMake;
         parentDiv.appendChild(label);
         
         //radio button
-        const radioMake = document.createElement("input");
-        radioMake.type = "radio";
-        radioMake.name = "task";
-        radioMake.value = index;
-        radioMake.id = index;
+        const checkboxMake = document.createElement("input");
+        checkboxMake.type = "checkbox";
+        checkboxMake.name = "task";
+        checkboxMake.value = index;
+        checkboxMake.id = index;
         const parentLabel = label;
-        parentLabel.appendChild(radioMake); 
+        parentLabel.appendChild(checkboxMake); 
+
+        label.innerHTML += task.taskToDo;
+        
         
     });
 
@@ -75,18 +77,20 @@ function fillTasks () {
 
         //label with task
         const label = document.createElement("label");
-        label.innerHTML = task.taskToDo;
         label.setAttribute("for", index);
         const parentDiv = divMake;
         parentDiv.appendChild(label);
 
         //radio button
-        const radioMake = document.createElement("input");
-        radioMake.type = "radio";
-        radioMake.name = "done";
-        radioMake.value = index;
-        radioMake.id = index;
-        parentDiv.appendChild(radioMake);
+        const checkboxMake = document.createElement("input");
+        checkboxMake.type = "checkbox";
+        checkboxMake.name = "done";
+        checkboxMake.value = index;
+        checkboxMake.id = index;
+        const parentLabel = label;
+        parentLabel.appendChild(checkboxMake);
+
+        label.innerHTML += task.taskToDo;
       
         return task, index;
     });
@@ -117,17 +121,27 @@ const buttonMarkComplete = document.getElementById("MarkComplete");
 buttonMarkComplete.addEventListener('click', markCompleted);
 
 function markCompleted () {
-    const selectedRadio = document.querySelector('input[name="task"]:checked');
-    const selectedTask= selectedRadio.parentElement.textContent;
-    console.log(selectedTask);
+    const allSelectedCheckbox = document.querySelectorAll('input[name="task"]:checked');
 
-    for (let i in tasks) {
-        if (toDo[i].taskToDo == selectedTask) {
-            toDo[i].taskComplete = true;
-            toDo[i].finishedDate = new Date ().toLocaleString();
-            completedToDo.push(toDo[i]);
-            toDo.splice([i],1);
-            break
+    let selectedStore = [];
+    
+    for(let j = 0; j < allSelectedCheckbox.length;  j++)
+    {
+        const selectedTask= allSelectedCheckbox[j].parentElement.textContent;
+        selectedStore.push(selectedTask);
+    }
+
+    console.log(selectedStore);
+
+    for (let j in selectedStore) {
+        for (let i in toDo) {
+            if (toDo[i].taskToDo == selectedStore[j]) {
+                toDo[i].taskComplete = true;
+                toDo[i].finishedDate = new Date ().toLocaleString();
+                completedToDo.push(toDo[i]);
+                toDo.splice([i],1);
+                break
+            }
         }
     };
     
@@ -142,14 +156,24 @@ const buttonRemoveTask = document.getElementById("deleteTask");
 buttonRemoveTask.addEventListener('click', removeTask);
 
 function removeTask () {
-    const selectedRadio = document.querySelector('input[type="radio"]:checked');
-    const selectedTask= selectedRadio.parentElement.textContent;
-    console.log(selectedTask);
+    const allSelectedCheckbox = document.querySelectorAll('input[name="done"]:checked');
 
-    for (let i in completedToDo) {
-        if (completedToDo[i].taskToDo == selectedTask) {
-            completedToDo.splice([i],1);
-            break;
+    let selectedStore = [];
+    
+    for(let j = 0; j < allSelectedCheckbox.length;  j++)
+    {
+        const selectedTask= allSelectedCheckbox[j].parentElement.textContent;
+        selectedStore.push(selectedTask);
+    }
+
+    console.log(selectedStore);
+
+    for (let j in selectedStore) {
+        for (let i in completedToDo) {
+            if (completedToDo[i].taskToDo == selectedStore[j]) {
+                completedToDo.splice([i],1);
+                break;
+            }
         }
     };
 
@@ -164,16 +188,27 @@ const buttonMoveUp = document.getElementById("moveUp");
 buttonMoveUp.addEventListener('click', moveTaskUp);
 
 function moveTaskUp ()  {
-    const selectedRadio = document.querySelector('input[name="task"]:checked');
-    const selectedTask= selectedRadio.parentElement.textContent;
-    console.log(selectedTask);
+    const allSelectedCheckbox = document.querySelectorAll('input[name="task"]:checked');
+    console.log(allSelectedCheckbox)
+    console.log(toDo)
+    let selectedStore = [];
+    
+    for(let j = 0; j < allSelectedCheckbox.length;  j++)
+    {
+        const selectedTask= allSelectedCheckbox[j].parentElement.textContent;
+        selectedStore.push(selectedTask);
+    }
 
-    for (let i in toDo) {
-        if (toDo[i].taskToDo == selectedTask && toDo[i] !== toDo[0]) {
-            const storedTask = toDo[i];
-            toDo[i] = toDo[i-1];
-            toDo[i-1] = storedTask;
-            break;
+    console.log(selectedStore);
+
+    for (let j in selectedStore) {
+        for (let i in toDo) {
+            if (toDo[i].taskToDo == selectedStore[j] && toDo[i] !== toDo[0]) {
+                const storedTask = toDo[i];
+                toDo[i] = toDo[i-1];
+                toDo[i-1] = storedTask;
+                break;
+            }
         }
     };
 
@@ -187,19 +222,29 @@ const buttonMoveDown = document.getElementById("moveDown");
 buttonMoveDown.addEventListener('click', moveTaskDown);
 
 function moveTaskDown ()  {
-    const selectedRadio = document.querySelector('input[name="task"]:checked');
-    const selectedTask= selectedRadio.parentElement.textContent;
-    console.log(selectedTask);
+    const allSelectedCheckbox = document.querySelectorAll('input[name="task"]:checked');
+    console.log(allSelectedCheckbox)
+    let selectedStore = [];
+    
+    for(let j = 0; j < allSelectedCheckbox.length;  j++)
+    {
+        const selectedTask= allSelectedCheckbox[j].parentElement.textContent;
+        selectedStore.push(selectedTask);
+    }
 
-    for (let i in toDo) {   
-        if (toDo[i].taskToDo == selectedTask &&  toDo[i] !== toDo[toDo.length-1]) {
-            const count = Number(i)+1;
-            const storedTask = toDo[i];
-            console.log(count);
-            console.log(storedTask);
-            toDo[i] = toDo[count];
-            toDo[count] = storedTask;
-            break;
+    console.log(selectedStore);
+
+    for (let j in selectedStore) {
+        for (let i in toDo) {  
+            if (toDo[i].taskToDo == selectedStore[j] &&  toDo[i] !== toDo[toDo.length-1]) {
+                const count = Number(i)+1;
+                const storedTask = toDo[i];
+                console.log(count);
+                console.log(storedTask);
+                toDo[i] = toDo[count];
+                toDo[count] = storedTask;
+                break;
+            }
         }
     };
 
